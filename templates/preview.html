@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="static/css/doc.css"/>
+</head>
+<body>
+<div id="doc-container">
+    <div id="doc-preview">
+        {% for p in paragraphs %}
+            <{{ p.tag }} style="{{ p.css }}">
+                {% if p.sub_tags %}
+                    {% for t in p.sub_tags %}
+                        {% if t.children %}
+                            {% for c in t.children %}
+                                <{{ c.tag }} style="{{ c.style }}">
+                                    {% if c.sub_tag %}
+                                        <{{ c.sub_tag }}>
+                                    {% endif %}
+                                    {{ c.text }}
+                                    {% if c.sub_tag %}
+                                        </{{ c.sub_tag }}>
+                                    {% endif %}
+                                </{{ c.tag }}>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {{ p.text }}
+                {% if p.sub_tags %}
+                    {% for t in p.sub_tags %}
+                        </{{ t }}>
+                    {% endfor %}
+                {% endif %}
+            </{{ p.tag }}>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

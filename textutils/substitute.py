@@ -4,15 +4,14 @@ import string
 import os
 
 
-TEMPLATE_FILE = ""
 TEXT_CHANGES = ""
 
 try:
     import local_settings
 except ImportError:
-    print("Local Settings doesn't exist")
+    SAMPLE_DOCUMENT = os.path.join("documents", "doc_templates", "sample.docx")
 else:
-    TEMPLATE_FILE = local_settings.TEMPLATE_DOCUMENT
+    SAMPLE_DOCUMENT = local_settings.SAMPLE_DOCUMENT
     TEXT_CHANGES = local_settings.CHANGES
 
 
@@ -36,7 +35,7 @@ class Changes:
 
 
 def create_changes_for_phrase(target_phrase, new_phrase, preserve_case=False):
-    docs = Document(TEMPLATE_FILE)
+    docs = Document(SAMPLE_DOCUMENT)
     locations = []
 
     for p_i, p in enumerate(docs.paragraphs):
@@ -58,18 +57,20 @@ def match_case(original_text, new_text):
         return new_text
 
 
+
 def clean_word(word):
     return re.sub('[' + string.punctuation + ']', '', word)
 
 
 def create_new_doc(location_list):
-    docs = Document(TEMPLATE_FILE)
+    docs = Document(SAMPLE_DOCUMENT)
     for l in location_list:
         p = docs.paragraphs[l.paragraph_index]
         t_list = p.text.split(' ')
         t_list[l.token_offset] = t_list[l.token_offset].lower().replace(l.target_phrase, l.new_phrase)
         docs.paragraphs[l.paragraph_index].text = ' '.join(t_list)
     docs.save(os.path.join('output', 'new.docx'))
+
 
 
 if __name__ == "__main__":

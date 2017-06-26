@@ -1,0 +1,15 @@
+#doc-container {
+    width: 100%;
+}
+
+#doc-preview {
+    font-family: Calibri;
+    width: 40em;
+    height: 55em;
+    margin: 0 auto;
+    border: black 2px solid;
+}
+
+p {
+    margin: 5px;
+}
